@@ -163,7 +163,7 @@ class StoreRepository(private val context: Context) {
             if (code !in 200..299) {
                 throw IllegalStateException("GitHub ответил $code")
             }
-            connection.inputStream.bufferedReader().use { it.readText() }
+            connection.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
         } finally {
             connection.disconnect()
         }

@@ -123,7 +123,7 @@ fun AboutScreen(
                             color = scheme.onPrimaryContainer,
                         )
                         Text(
-                            text = "версия 1.0.0",
+                            text = "версия 1.0.1",
                             style = MaterialTheme.typography.labelMedium,
                             color = scheme.onPrimaryContainer.copy(alpha = 0.7f),
                         )

@@ -102,7 +102,7 @@ fun DetailScreen(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconBadge(
                     icon = Icons.Rounded.ArrowBack,
-                    contentDescription = "РќР°Р·Р°Рґ",
+                    contentDescription = "Назад",
                     modifier = Modifier
                         .clip(CircleShape)
                         .then(Modifier)
@@ -111,21 +111,21 @@ fun DetailScreen(
                 Spacer(Modifier.weight(1f))
                 IconBadge(
                     icon = Icons.Rounded.Share,
-                    contentDescription = "РџРѕРґРµР»РёС‚СЊСЃСЏ",
+                    contentDescription = "Поделиться",
                     modifier = Modifier.clickableIcon {
                         val intent = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
                             type = "text/plain"
-                            putExtra(android.content.Intent.EXTRA_TEXT, "${app.name} вЂ” ${app.repoUrl}")
+                            putExtra(android.content.Intent.EXTRA_TEXT, "${app.name} — ${app.repoUrl}")
                         }
                         context.startActivity(
-                            android.content.Intent.createChooser(intent, "РџРѕРґРµР»РёС‚СЊСЃСЏ РїСЂРёР»РѕР¶РµРЅРёРµРј")
+                            android.content.Intent.createChooser(intent, "Поделиться приложением")
                         )
                     },
                 )
                 Spacer(Modifier.width(8.dp))
                 IconBadge(
                     icon = Icons.Rounded.Code,
-                    contentDescription = "РћС‚РєСЂС‹С‚СЊ GitHub",
+                    contentDescription = "Открыть GitHub",
                     modifier = Modifier.clickableIcon { openUrl(context, app.repoUrl) },
                 )
             }
@@ -220,7 +220,7 @@ fun DetailScreen(
         }
 
         item(key = "about") {
-            DetailSection(title = "РћР± РїСЂРёР»РѕР¶РµРЅРёРё") {
+            DetailSection(title = "Об приложении") {
                 Text(
                     text = app.description,
                     style = MaterialTheme.typography.bodyLarge,
@@ -231,7 +231,7 @@ fun DetailScreen(
 
         if (app.features.isNotEmpty()) {
             item(key = "features") {
-                DetailSection(title = "Р§С‚Рѕ РІРЅСѓС‚СЂРё") {
+                DetailSection(title = "Что внутри") {
                     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         app.features.forEach { feature ->
                             Row(verticalAlignment = Alignment.Top) {
@@ -258,8 +258,8 @@ fun DetailScreen(
         if (app.release != null && app.release.notes.isNotBlank()) {
             item(key = "notes") {
                 DetailSection(
-                    title = "Р§С‚Рѕ РЅРѕРІРѕРіРѕ",
-                    subtitle = "${app.release.versionLabel} В· ${formatDate(app.release.publishedAt)}",
+                    title = "Что нового",
+                    subtitle = "${app.release.versionLabel} · ${formatDate(app.release.publishedAt)}",
                 ) {
                     Text(
                         text = app.release.notes,
@@ -271,16 +271,16 @@ fun DetailScreen(
         }
 
         item(key = "info") {
-            DetailSection(title = "РРЅС„РѕСЂРјР°С†РёСЏ") {
+            DetailSection(title = "Информация") {
                 Column {
-                    InfoRow("Р Р°Р·СЂР°Р±РѕС‚С‡РёРє", "cleveroze")
-                    InfoRow("РљР°С‚РµРіРѕСЂРёСЏ", app.category)
-                    InfoRow("Р’РµСЂСЃРёСЏ", app.release?.versionLabel ?: "РіРѕС‚РѕРІРёС‚СЃСЏ")
-                    InfoRow("Р Р°Р·РјРµСЂ APK", app.release?.let { formatBytes(it.sizeBytes) } ?: "вЂ”")
-                    InfoRow("РћР±РЅРѕРІР»РµРЅРѕ", app.release?.let { formatDate(it.publishedAt) } ?: "вЂ”")
-                    InfoRow("Р—Р°РіСЂСѓР·РѕРє", app.release?.let { it.downloads.toString() } ?: "вЂ”")
-                    if (app.language.isNotBlank()) InfoRow("РЇР·С‹Рє РєРѕРґР°", app.language)
-                    InfoRow("РСЃС…РѕРґРЅС‹Р№ РєРѕРґ", "github.com/cleveroze/${app.repo}", isLink = true) {
+                    InfoRow("Разработчик", "cleveroze")
+                    InfoRow("Категория", app.category)
+                    InfoRow("Версия", app.release?.versionLabel ?: "готовится")
+                    InfoRow("Размер APK", app.release?.let { formatBytes(it.sizeBytes) } ?: "—")
+                    InfoRow("Обновлено", app.release?.let { formatDate(it.publishedAt) } ?: "—")
+                    InfoRow("Загрузок", app.release?.let { it.downloads.toString() } ?: "—")
+                    if (app.language.isNotBlank()) InfoRow("Язык кода", app.language)
+                    InfoRow("Исходный код", "github.com/cleveroze/${app.repo}", isLink = true) {
                         openUrl(context, app.repoUrl)
                     }
                 }
@@ -306,7 +306,7 @@ fun DetailScreen(
                             style = MaterialTheme.typography.titleMedium,
                         )
                         Text(
-                            text = "РѕСЃС‚Р°Р»СЊРЅС‹Рµ РїСЂРѕРµРєС‚С‹ РЅР° GitHub",
+                            text = "остальные проекты на GitHub",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -323,8 +323,8 @@ fun DetailScreen(
 
         item(key = "legal") {
             Text(
-                text = "APK СЃРєР°С‡РёРІР°РµС‚СЃСЏ РЅР°РїСЂСЏРјСѓСЋ РёР· GitHub Releases. OtherApps РЅРµ РјРµРЅСЏРµС‚ С„Р°Р№Р»С‹ " +
-                    "Рё РЅРµ С…СЂР°РЅРёС‚ РёС… РЅР° СЃРµСЂРІРµСЂРµ вЂ” С‚РѕР»СЊРєРѕ РїРµСЂРµРґР°С‘С‚ СЃСЃС‹Р»РєСѓ.",
+                text = "APK скачивается напрямую из GitHub Releases. OtherApps не меняет файлы " +
+                    "и не хранит их на сервере — только передаёт ссылку.",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
@@ -370,13 +370,13 @@ private fun DownloadAction(
             ) { state ->
                 when (state) {
                     ActionState.ComingSoon -> DisabledAction(
-                        text = "Р“РѕС‚РѕРІРёС‚СЃСЏ Рє СЂРµР»РёР·Сѓ",
-                        hint = "РЎР»РµРґРёС‚Рµ Р·Р° РѕР±РЅРѕРІР»РµРЅРёСЏРјРё РЅР° GitHub",
+                        text = "Готовится к релизу",
+                        hint = "Следите за обновлениями на GitHub",
                     )
 
                     ActionState.NoRelease -> DisabledAction(
-                        text = "РЎР±РѕСЂРєРё РїРѕРєР° РЅРµС‚",
-                        hint = "APK РїРѕСЏРІРёС‚СЃСЏ РІ GitHub Releases",
+                        text = "Сборки пока нет",
+                        hint = "APK появится в GitHub Releases",
                     )
 
                     ActionState.Downloading -> {
@@ -396,7 +396,7 @@ private fun DownloadAction(
                                 )
                                 Spacer(Modifier.width(8.dp))
                                 Text(
-                                    text = "РЎРєР°С‡РёРІР°РµРј APK",
+                                    text = "Скачиваем APK",
                                     style = MaterialTheme.typography.titleMedium,
                                     modifier = Modifier.weight(1f),
                                 )
@@ -419,8 +419,8 @@ private fun DownloadAction(
                             Spacer(Modifier.height(8.dp))
                             Text(
                                 text = progress?.let {
-                                    "${formatBytes(it.received)} РёР· ${formatBytes(it.total)}"
-                                } ?: "РџРѕРґРєР»СЋС‡Р°РµРјСЃСЏ Рє GitHubвЂ¦",
+                                    "${formatBytes(it.received)} из ${formatBytes(it.total)}"
+                                } ?: "Подключаемся к GitHub…",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = scheme.onSurfaceVariant,
                             )
@@ -441,7 +441,7 @@ private fun DownloadAction(
                         ) {
                             Icon(Icons.Rounded.Android, contentDescription = null, modifier = Modifier.size(18.dp))
                             Spacer(Modifier.width(8.dp))
-                            Text("РЈСЃС‚Р°РЅРѕРІРёС‚СЊ", style = MaterialTheme.typography.labelLarge)
+                            Text("Установить", style = MaterialTheme.typography.labelLarge)
                         }
                         Spacer(Modifier.width(8.dp))
                         IconButton(
@@ -453,7 +453,7 @@ private fun DownloadAction(
                         ) {
                             Icon(
                                 Icons.Rounded.DeleteOutline,
-                                contentDescription = "РЈРґР°Р»РёС‚СЊ APK",
+                                contentDescription = "Удалить APK",
                                 tint = scheme.onSurfaceVariant,
                             )
                         }
@@ -461,7 +461,7 @@ private fun DownloadAction(
 
                     ActionState.Failed -> Column {
                         Text(
-                            text = (download as? DownloadState.Failed)?.message ?: "РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё",
+                            text = (download as? DownloadState.Failed)?.message ?: "Ошибка загрузки",
                             style = MaterialTheme.typography.bodySmall,
                             color = scheme.error,
                         )
@@ -475,7 +475,7 @@ private fun DownloadAction(
                         ) {
                             Icon(Icons.Rounded.Refresh, contentDescription = null, modifier = Modifier.size(18.dp))
                             Spacer(Modifier.width(8.dp))
-                            Text("РџРѕРІС‚РѕСЂРёС‚СЊ", style = MaterialTheme.typography.labelLarge)
+                            Text("Повторить", style = MaterialTheme.typography.labelLarge)
                         }
                     }
 
@@ -494,13 +494,13 @@ private fun DownloadAction(
                             Icon(Icons.Rounded.Download, contentDescription = null, modifier = Modifier.size(19.dp))
                             Spacer(Modifier.width(8.dp))
                             Text(
-                                text = "РЎРєР°С‡Р°С‚СЊ APK" + (app.release?.let { " В· ${formatBytes(it.sizeBytes)}" } ?: ""),
+                                text = "Скачать APK" + (app.release?.let { " · ${formatBytes(it.sizeBytes)}" } ?: ""),
                                 style = MaterialTheme.typography.labelLarge,
                             )
                         }
                         Spacer(Modifier.height(8.dp))
                         Text(
-                            text = "РџСЂСЏРјР°СЏ СЃСЃС‹Р»РєР° СЃ GitHub Releases В· Android 8+",
+                            text = "Прямая ссылка с GitHub Releases · Android 8+",
                             style = MaterialTheme.typography.labelSmall,
                             color = scheme.onSurfaceVariant,
                             modifier = Modifier.fillMaxWidth(),
